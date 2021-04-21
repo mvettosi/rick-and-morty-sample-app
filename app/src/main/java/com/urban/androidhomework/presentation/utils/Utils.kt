@@ -1,5 +1,6 @@
-package com.urban.androidhomework
+package com.urban.androidhomework.presentation.utils
 
+import com.urban.androidhomework.domain.Character
 import retrofit2.Response
 
 class Utils {

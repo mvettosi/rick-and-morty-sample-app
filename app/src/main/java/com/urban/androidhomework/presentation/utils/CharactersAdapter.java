@@ -1,4 +1,4 @@
-package com.urban.androidhomework;
+package com.urban.androidhomework.presentation.utils;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;

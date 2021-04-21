@@ -1,4 +1,4 @@
-package com.urban.androidhomework
+package com.urban.androidhomework.domain
 
 data class Character(
     val results: List<CharacterData>
