@@ -4,7 +4,7 @@ import com.urban.androidhomework.data.CharacterRepository
 import com.urban.androidhomework.domain.Character
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
@@ -27,21 +27,28 @@ class GetAllCharactersUseCaseTest {
         coEvery { characterRepository.getAllCharacters() } returns expected
 
         // Act
-        val actual = underTest().first()
+        val actual = underTest().toList()
 
         // Assert
-        assertEquals(expected, actual)
+        assertEquals(2, actual.size)
+        assertTrue(actual[0] is Loading<Character>)
+        assertTrue(actual[1] is Success<Character>)
+        assertEquals(expected, (actual[1] as Success<Character>).data)
     }
 
     @Test
     fun `check that exception is handled in the flow`() = runBlocking {
         // Arrange
-        coEvery { characterRepository.getAllCharacters() } throws Exception()
+        val expected = Exception()
+        coEvery { characterRepository.getAllCharacters() } throws expected
 
         // Act
-        val actual = underTest().first()
+        val actual = underTest().toList()
 
         // Assert
-        assertTrue(actual.results.isEmpty())
+        assertEquals(2, actual.size)
+        assertTrue(actual[0] is Loading<Character>)
+        assertTrue(actual[1] is Failure<Character>)
+        assertEquals(expected, (actual[1] as Failure<Character>).exception)
     }
 }
