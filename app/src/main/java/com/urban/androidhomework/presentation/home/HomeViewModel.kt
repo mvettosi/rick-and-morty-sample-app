@@ -1,31 +1,20 @@
 package com.urban.androidhomework.presentation.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.urban.androidhomework.domain.Character
-import com.urban.androidhomework.usecase.GetAllCharactersUseCase
-import com.urban.androidhomework.usecase.ResourceStatus
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import com.urban.androidhomework.data.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-        private val getAllCharactersUseCase: GetAllCharactersUseCase
+        characterRepository: CharacterRepository
 ) : ViewModel() {
-    private val _characters = MutableLiveData<ResourceStatus<Character>>()
-    val characters: LiveData<ResourceStatus<Character>> = _characters
-
-    init {
-        loadCharacters()
-    }
-
-    fun loadCharacters() {
-        viewModelScope.launch {
-            getAllCharactersUseCase().collect { _characters.value = it }
-        }
-    }
+    val characters =
+            Pager(PagingConfig(pageSize = 20)) { characterRepository }
+            .flow
+            .cachedIn(viewModelScope)
 }

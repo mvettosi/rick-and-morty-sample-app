@@ -1,14 +1,26 @@
-package com.urban.androidhomework.presentation.utils;
+package com.urban.androidhomework.presentation.home
 
-import android.content.Context;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.urban.androidhomework.domain.Character
 
-import androidx.annotation.NonNull;
+class CharactersAdapter: PagingDataAdapter<Character.CharacterData, CharacterViewHolder>(REPO_COMPARATOR) {
 
-public class CharactersAdapter extends ArrayAdapter<String> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            CharacterViewHolder.create(parent)
 
-    public CharactersAdapter(@NonNull Context context, int resource, @NonNull String[] objects) {
-        super(context, resource, objects);
+    override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) =
+            holder.bind(getItem(position))
+
+    companion object {
+        private val REPO_COMPARATOR = object : DiffUtil.ItemCallback<Character.CharacterData>() {
+            override fun areItemsTheSame(oldItem: Character.CharacterData, newItem: Character.CharacterData): Boolean =
+                    oldItem.id == newItem.id
+
+            override fun areContentsTheSame(oldItem: Character.CharacterData, newItem: Character.CharacterData): Boolean =
+                    oldItem == newItem
+        }
     }
-
 }

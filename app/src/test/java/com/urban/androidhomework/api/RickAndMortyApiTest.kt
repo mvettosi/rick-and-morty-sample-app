@@ -35,7 +35,7 @@ class RickAndMortyApiTest {
         val underTest = networkModule.provideRickAndMortyApi(retrofit)
 
         // Act
-        val result = underTest.getAllCharacters()
+        val result = underTest.getAllCharacters(1)
 
         // Assert
         assertNotNull(result.results)
