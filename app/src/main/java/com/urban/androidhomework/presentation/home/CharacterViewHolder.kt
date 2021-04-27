@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.urban.androidhomework.databinding.CharacterViewItemBinding
-import com.urban.androidhomework.domain.Character
+import com.urban.androidhomework.domain.model.ShowCharacter
 
 class CharacterViewHolder(
         private val binding: CharacterViewItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(character: Character.CharacterData?) = with(binding) {
+    fun bind(character: ShowCharacter?) = with(binding) {
         if (character?.name != null) {
             characterName.text = character.name
             binding.root.setOnClickListener { view ->

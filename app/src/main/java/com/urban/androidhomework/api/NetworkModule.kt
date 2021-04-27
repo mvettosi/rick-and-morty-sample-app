@@ -1,5 +1,7 @@
 package com.urban.androidhomework.api
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,15 +21,19 @@ class NetworkModule {
     fun provideRickAndMortyBaseUrl() = RICK_AND_MORTY_BASE_URL
 
     @Provides
-    fun provideRetrofit(@RickAndMortyBaseUrl baseUrl: String) = Retrofit.Builder()
+    fun provideGson() = GsonBuilder().setDateFormat(TIME_FORMAT).create()
+
+    @Provides
+    fun provideRetrofit(@RickAndMortyBaseUrl baseUrl: String, gson: Gson) = Retrofit.Builder()
             .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
     @Provides
     fun provideRickAndMortyApi(retrofit: Retrofit) = retrofit.create(RickAndMortyApi::class.java)
 
     internal companion object {
+        const val TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"
         const val RICK_AND_MORTY_BASE_URL = "https://rickandmortyapi.com/api/"
     }
 }

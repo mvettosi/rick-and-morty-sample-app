@@ -7,8 +7,11 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
+import java.time.Month
+import java.time.ZoneId
 
 class RickAndMortyApiTest {
     lateinit var server: MockWebServer
@@ -31,18 +34,33 @@ class RickAndMortyApiTest {
             enqueue(MockResponse().setBody(TEST_CHARACTERS))
         }
         val baseUrl = server.url("")
-        val retrofit = networkModule.provideRetrofit(baseUrl.toUrl().toString())
+        val retrofit = networkModule.provideRetrofit(
+                baseUrl.toUrl().toString(),
+                networkModule.provideGson()
+        )
         val underTest = networkModule.provideRickAndMortyApi(retrofit)
 
         // Act
         val result = underTest.getAllCharacters(1)
 
         // Assert
+        assertNotNull(result.info)
+        assertEquals(671, result.info.count)
+        assertEquals(34, result.info.pages)
+        assertEquals("https://rickandmortyapi.com/api/character/?page=2", result.info.next)
+        assertNull(result.info.prev)
+
         assertNotNull(result.results)
         assertFalse(result.results.isEmpty())
         assertEquals(1, result.results.size)
         assertEquals(1, result.results[0].id)
         assertEquals("Rick Sanchez", result.results[0].name)
+
+        val created = result.results[0].created
+        val localCreated = created.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+        assertEquals(2017, localCreated.year)
+        assertEquals(Month.NOVEMBER, localCreated.month)
+        assertEquals(4, localCreated.dayOfMonth)
     }
 
     private companion object {

@@ -7,4 +7,6 @@
     <string name="loading">Loading</string>
     <string name="retry">Retry</string>
     <string name="no_results">No data to show…</string>
+    <string name="datetime_filter">Date and time filter</string>
+    <string name="cancel_filter">Cancel</string>
 </resources>

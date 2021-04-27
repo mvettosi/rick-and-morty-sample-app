@@ -3,10 +3,9 @@ package com.urban.androidhomework.presentation.home
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.urban.androidhomework.domain.Character
+import com.urban.androidhomework.domain.model.ShowCharacter
 
-class CharactersAdapter: PagingDataAdapter<Character.CharacterData, CharacterViewHolder>(REPO_COMPARATOR) {
+class CharactersAdapter: PagingDataAdapter<ShowCharacter, CharacterViewHolder>(REPO_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             CharacterViewHolder.create(parent)
@@ -15,11 +14,11 @@ class CharactersAdapter: PagingDataAdapter<Character.CharacterData, CharacterVie
             holder.bind(getItem(position))
 
     companion object {
-        private val REPO_COMPARATOR = object : DiffUtil.ItemCallback<Character.CharacterData>() {
-            override fun areItemsTheSame(oldItem: Character.CharacterData, newItem: Character.CharacterData): Boolean =
-                    oldItem.id == newItem.id
+        private val REPO_COMPARATOR = object : DiffUtil.ItemCallback<ShowCharacter>() {
+            override fun areItemsTheSame(oldItem: ShowCharacter, newItem: ShowCharacter): Boolean =
+                    oldItem.name == newItem.name
 
-            override fun areContentsTheSame(oldItem: Character.CharacterData, newItem: Character.CharacterData): Boolean =
+            override fun areContentsTheSame(oldItem: ShowCharacter, newItem: ShowCharacter): Boolean =
                     oldItem == newItem
         }
     }

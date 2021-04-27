@@ -1,5 +1,6 @@
 package com.urban.androidhomework.api
 
+import com.google.gson.Gson
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Test
@@ -7,6 +8,9 @@ import org.junit.Test
 import org.junit.Assert.*
 import org.junit.Before
 import retrofit2.Retrofit
+import java.time.Month
+import java.time.ZoneId
+import java.util.*
 
 class NetworkModuleTest {
     private lateinit var underTest: NetworkModule
@@ -20,7 +24,7 @@ class NetworkModuleTest {
     fun provideRetrofit() {
         // Arrange
         // Act
-        val actual = underTest.provideRetrofit(NetworkModule.RICK_AND_MORTY_BASE_URL)
+        val actual = underTest.provideRetrofit(NetworkModule.RICK_AND_MORTY_BASE_URL, Gson())
 
         // Assert
         assertTrue(actual.baseUrl().isHttps)

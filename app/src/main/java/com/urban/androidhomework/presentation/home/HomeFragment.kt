@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.urban.androidhomework.R
 import com.urban.androidhomework.databinding.HomeFragmentBinding
 import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
@@ -16,6 +17,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Month
+import java.time.ZoneId
+import java.util.*
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.home_fragment) {
@@ -29,11 +35,7 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
 
         initView()
 
-        lifecycleScope.launch {
-            viewModel.characters.collect {
-                charactersAdapter.submitData(it)
-            }
-        }
+        loadCharacters()
     }
 
     private fun initView() = with(binding) {
@@ -49,6 +51,7 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
             Timber.d("Character list loading state changed: $loadState")
             val refreshState = loadState.source.refresh
             characterList.isVisible = refreshState is LoadState.NotLoading
+            datetimeFilter.isVisible = refreshState is LoadState.NotLoading
             progressBar.isVisible = refreshState is LoadState.Loading
             retryButton.isVisible = refreshState is LoadState.Error
 
@@ -62,5 +65,26 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         }
 
         retryButton.setOnClickListener { charactersAdapter.retry() }
+
+        datetimeFilter.setOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.datePicker()
+                    .setTitleText("Select date")
+                    .build()
+            datePicker.addOnPositiveButtonClickListener { dateSelected ->
+                loadCharacters(Date(dateSelected))
+            }
+            datePicker.show(childFragmentManager, datePicker.toString())
+        }
+
+        cancelFilter.setOnClickListener { loadCharacters() }
+    }
+
+    private fun loadCharacters(dateFilter: Date? = null) {
+        lifecycleScope.launch {
+            viewModel.getCharacterFlow(dateFilter).collect {
+                charactersAdapter.submitData(it)
+            }
+        }
+        binding.cancelFilter.isVisible = dateFilter != null
     }
 }

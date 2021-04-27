@@ -1,10 +1,10 @@
 package com.urban.androidhomework.data
 
-import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.urban.androidhomework.TestData
 import com.urban.androidhomework.api.RickAndMortyApi
-import com.urban.androidhomework.domain.Character
+import com.urban.androidhomework.domain.model.ShowCharacter
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -16,27 +16,28 @@ import org.junit.Before
 import org.junit.Test
 import java.io.IOException
 
-class CharacterRepositoryTest {
+class CharacterPagingSourceTest {
     private val rickAndMortyApi = mockk<RickAndMortyApi>(relaxed = true)
-    private lateinit var underTest: CharacterRepository
+    private lateinit var underTest: CharacterPagingSource
 
     @Before
     fun setUp() {
-        underTest = CharacterRepository(rickAndMortyApi)
+        underTest = CharacterPagingSource(rickAndMortyApi)
     }
 
     @Test
     fun `load handles successful response of first page`() = runBlocking {
         // Arrange
-        val expected = Character(listOf(Character.CharacterData(1, "test")))
-        coEvery { rickAndMortyApi.getAllCharacters(1) } returns expected
+        val response = TestData.CHARACTER_RESPONSE_FIRST_PAGE
+        coEvery { rickAndMortyApi.getAllCharacters(1) } returns response
+        val expected = listOf(TestData.SHOW_CHARACTER)
 
         // Act
         val actual = underTest.load(PagingSource.LoadParams.Refresh(1, 20, true))
 
         // Assert
         assertTrue(actual is PagingSource.LoadResult.Page)
-        assertEquals(expected.results, (actual as PagingSource.LoadResult.Page).data)
+        assertEquals(expected, (actual as PagingSource.LoadResult.Page).data)
         assertNull(actual.prevKey)
         assertEquals(2, actual.nextKey)
     }
@@ -44,17 +45,18 @@ class CharacterRepositoryTest {
     @Test
     fun `load handles successful response of second page`() = runBlocking {
         // Arrange
-        val expected = Character(listOf(Character.CharacterData(1, "test")))
-        coEvery { rickAndMortyApi.getAllCharacters(2) } returns expected
+        val response = TestData.CHARACTER_RESPONSE_SECOND_PAGE
+        coEvery { rickAndMortyApi.getAllCharacters(2) } returns response
+        val expected = listOf(TestData.SHOW_CHARACTER)
 
         // Act
         val actual = underTest.load(PagingSource.LoadParams.Refresh(2, 20, true))
 
         // Assert
         assertTrue(actual is PagingSource.LoadResult.Page)
-        assertEquals(expected.results, (actual as PagingSource.LoadResult.Page).data)
+        assertEquals(expected, (actual as PagingSource.LoadResult.Page).data)
         assertEquals(1, actual.prevKey)
-        assertEquals(3, actual.nextKey)
+        assertNull(actual.nextKey)
     }
 
     @Test
@@ -74,7 +76,7 @@ class CharacterRepositoryTest {
     @Test
     fun `getRefreshKey handles null anchorPosition`() {
         // Arrange
-        val pagingState = mockk<PagingState<Int, Character.CharacterData>>()
+        val pagingState = mockk<PagingState<Int, ShowCharacter>>()
         every { pagingState.anchorPosition } returns null
 
         // Act
@@ -87,7 +89,7 @@ class CharacterRepositoryTest {
     @Test
     fun `getRefreshKey handles null closestPageToPosition`() {
         // Arrange
-        val pagingState = mockk<PagingState<Int, Character.CharacterData>>()
+        val pagingState = mockk<PagingState<Int, ShowCharacter>>()
         every { pagingState.anchorPosition } returns 1
         every { pagingState.closestPageToPosition(1) } returns null
 
@@ -101,9 +103,9 @@ class CharacterRepositoryTest {
     @Test
     fun `getRefreshKey handles null prevKey and nextKey`() {
         // Arrange
-        val pagingState = mockk<PagingState<Int, Character.CharacterData>>()
+        val pagingState = mockk<PagingState<Int, ShowCharacter>>()
         every { pagingState.anchorPosition } returns 1
-        val loadResult = mockk<PagingSource.LoadResult.Page<Int, Character.CharacterData>>()
+        val loadResult = mockk<PagingSource.LoadResult.Page<Int, ShowCharacter>>()
         every { pagingState.closestPageToPosition(1) } returns loadResult
         every { loadResult.prevKey } returns null
         every { loadResult.nextKey } returns null
@@ -118,9 +120,9 @@ class CharacterRepositoryTest {
     @Test
     fun `getRefreshKey handles existing prevKey`() {
         // Arrange
-        val pagingState = mockk<PagingState<Int, Character.CharacterData>>()
+        val pagingState = mockk<PagingState<Int, ShowCharacter>>()
         every { pagingState.anchorPosition } returns 1
-        val loadResult = mockk<PagingSource.LoadResult.Page<Int, Character.CharacterData>>()
+        val loadResult = mockk<PagingSource.LoadResult.Page<Int, ShowCharacter>>()
         every { pagingState.closestPageToPosition(1) } returns loadResult
         every { loadResult.prevKey } returns 1
         every { loadResult.nextKey } returns null
@@ -135,9 +137,9 @@ class CharacterRepositoryTest {
     @Test
     fun `getRefreshKey handles existing nextKey`() {
         // Arrange
-        val pagingState = mockk<PagingState<Int, Character.CharacterData>>()
+        val pagingState = mockk<PagingState<Int, ShowCharacter>>()
         every { pagingState.anchorPosition } returns 1
-        val loadResult = mockk<PagingSource.LoadResult.Page<Int, Character.CharacterData>>()
+        val loadResult = mockk<PagingSource.LoadResult.Page<Int, ShowCharacter>>()
         every { pagingState.closestPageToPosition(1) } returns loadResult
         every { loadResult.prevKey } returns null
         every { loadResult.nextKey } returns 3
