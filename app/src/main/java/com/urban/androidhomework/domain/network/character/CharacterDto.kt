@@ -9,5 +9,9 @@ import java.util.*
 data class CharacterDto(
     val id: Int,
     val name: String,
-    val created: Date
+    val created: Date,
+    val status: String,
+    val species: String,
+    val gender: String,
+    val image: String
 )

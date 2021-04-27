@@ -23,7 +23,11 @@ class CharacterPagingSource(
             val showCharacters: List<ShowCharacter> = result.results.map {
                 ShowCharacter(
                         name = it.name,
-                        created = it.created
+                        created = it.created,
+                        status = it.status,
+                        species = it.species,
+                        gender = it.gender,
+                        image = it.image
                 )
             }
 

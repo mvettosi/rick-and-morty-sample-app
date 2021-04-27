@@ -61,6 +61,11 @@ class RickAndMortyApiTest {
         assertEquals(2017, localCreated.year)
         assertEquals(Month.NOVEMBER, localCreated.month)
         assertEquals(4, localCreated.dayOfMonth)
+
+        assertEquals("Alive", result.results[0].status)
+        assertEquals("Human", result.results[0].species)
+        assertEquals("Male", result.results[0].gender)
+        assertEquals("https://rickandmortyapi.com/api/character/avatar/1.jpeg", result.results[0].image)
     }
 
     private companion object {

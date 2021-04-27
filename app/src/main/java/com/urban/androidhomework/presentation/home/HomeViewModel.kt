@@ -7,6 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.filter
 import com.urban.androidhomework.data.CharacterRepository
+import com.urban.androidhomework.presentation.general.toLocalDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
@@ -28,6 +29,4 @@ class HomeViewModel @Inject constructor(
             query == null || query.toLocalDate() == it.created.toLocalDate()
         }
     }
-
-    fun Date.toLocalDate() = toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 }

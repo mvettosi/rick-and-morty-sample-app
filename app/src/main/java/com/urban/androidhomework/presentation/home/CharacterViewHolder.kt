@@ -6,6 +6,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.urban.androidhomework.databinding.CharacterViewItemBinding
 import com.urban.androidhomework.domain.model.ShowCharacter
+import com.urban.androidhomework.presentation.general.GlideApp
+import com.urban.androidhomework.presentation.general.toDateString
 
 class CharacterViewHolder(
         private val binding: CharacterViewItemBinding
@@ -14,6 +16,11 @@ class CharacterViewHolder(
     fun bind(character: ShowCharacter?) = with(binding) {
         if (character?.name != null) {
             characterName.text = character.name
+            characterDate.text = character.created.toDateString()
+            GlideApp.with(binding.root.context)
+                    .load(character.image)
+                    .into(characterImage)
+
             binding.root.setOnClickListener { view ->
                 view.findNavController().navigate(HomeFragmentDirections.actionCharacter(character.name))
             }

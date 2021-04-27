@@ -28,7 +28,11 @@ object TestData {
     val CHARACTER_DTO = CharacterDto(
             id = 1,
             name = "test",
-            created = Date()
+            created = Date(),
+            status = "Test status",
+            species = "Test Species",
+            gender = "Male",
+            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
     )
 
     val CHARACTER_RESPONSE_FIRST_PAGE = CharacterListDto(
@@ -43,6 +47,10 @@ object TestData {
 
     val SHOW_CHARACTER = ShowCharacter(
             name = CHARACTER_DTO.name,
-            created = CHARACTER_DTO.created
+            created = CHARACTER_DTO.created,
+            status = CHARACTER_DTO.status,
+            species = CHARACTER_DTO.species,
+            gender = CHARACTER_DTO.gender,
+            image = CHARACTER_DTO.image
     )
 }
