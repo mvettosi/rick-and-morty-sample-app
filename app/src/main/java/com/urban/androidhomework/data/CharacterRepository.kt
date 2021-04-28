@@ -10,5 +10,8 @@ import javax.inject.Inject
 class CharacterRepository @Inject constructor(
         private val rickAndMortyApi: RickAndMortyApi
 ) {
+    /**
+     * Return a new instance of the Paging Source for a Rick and Morty character
+     */
     fun getPagingSource() = CharacterPagingSource(rickAndMortyApi)
 }

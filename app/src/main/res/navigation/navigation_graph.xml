@@ -20,7 +20,7 @@
         android:label="fragment_character"
         tools:layout="@layout/fragment_character" >
         <argument
-            android:name="name"
-            app:argType="string" />
+            android:name="charInfo"
+            app:argType="com.urban.androidhomework.domain.model.ShowCharacter" />
     </fragment>
 </navigation>

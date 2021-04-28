@@ -5,6 +5,8 @@ import androidx.paging.PagingState
 import com.urban.androidhomework.TestData
 import com.urban.androidhomework.api.RickAndMortyApi
 import com.urban.androidhomework.domain.model.ShowCharacter
+import com.urban.androidhomework.domain.network.PagedListDto
+import com.urban.androidhomework.domain.network.character.CharacterDto
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -15,6 +17,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
+import java.util.*
 
 class CharacterPagingSourceTest {
     private val rickAndMortyApi = mockk<RickAndMortyApi>(relaxed = true)
@@ -57,6 +60,48 @@ class CharacterPagingSourceTest {
         assertEquals(expected, (actual as PagingSource.LoadResult.Page).data)
         assertEquals(1, actual.prevKey)
         assertNull(actual.nextKey)
+    }
+
+    @Test
+    fun `load handles successful response with a character with no name`() = runBlocking {
+        // Arrange
+        val response = PagedListDto(
+                info = TestData.INFO_SECOND_PAGE,
+                results = listOf(
+                        CharacterDto(name = "one", created = Date()),
+                        CharacterDto(created = Date()),
+                        CharacterDto(name = "three", created = Date())
+                )
+        )
+        coEvery { rickAndMortyApi.getAllCharacters(2) } returns response
+
+        // Act
+        val actual = underTest.load(PagingSource.LoadParams.Refresh(2, 20, true))
+
+        // Assert
+        assertTrue(actual is PagingSource.LoadResult.Page)
+        assertEquals(2, (actual as PagingSource.LoadResult.Page).data.size)
+    }
+
+    @Test
+    fun `load handles successful response with a character with no creation date`() = runBlocking {
+        // Arrange
+        val response = PagedListDto(
+                info = TestData.INFO_SECOND_PAGE,
+                results = listOf(
+                        CharacterDto(name = "one", created = Date()),
+                        CharacterDto(name = "two"),
+                        CharacterDto(name = "three", created = Date())
+                )
+        )
+        coEvery { rickAndMortyApi.getAllCharacters(2) } returns response
+
+        // Act
+        val actual = underTest.load(PagingSource.LoadParams.Refresh(2, 20, true))
+
+        // Assert
+        assertTrue(actual is PagingSource.LoadResult.Page)
+        assertEquals(2, (actual as PagingSource.LoadResult.Page).data.size)
     }
 
     @Test

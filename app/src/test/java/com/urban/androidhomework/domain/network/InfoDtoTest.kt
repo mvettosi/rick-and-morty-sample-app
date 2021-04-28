@@ -15,7 +15,7 @@ class InfoDtoTest {
                 count = 1,
                 pages = 1,
                 prev = null,
-                next = "${TestData.URL}${TestData.NEXT}"
+                next = "${TestData.PAGE_URL}${TestData.NEXT}"
         )
 
         // Act
@@ -32,7 +32,7 @@ class InfoDtoTest {
                 count = 1,
                 pages = 1,
                 prev = "",
-                next = "${TestData.URL}${TestData.NEXT}"
+                next = "${TestData.PAGE_URL}${TestData.NEXT}"
         )
 
         // Act
@@ -49,7 +49,7 @@ class InfoDtoTest {
                 count = 1,
                 pages = 1,
                 prev = "some invalid url",
-                next = "${TestData.URL}${TestData.NEXT}"
+                next = "${TestData.PAGE_URL}${TestData.NEXT}"
         )
 
         // Act
@@ -65,8 +65,8 @@ class InfoDtoTest {
         underTest = InfoDto(
                 count = 1,
                 pages = 1,
-                prev = TestData.URL,
-                next = "${TestData.URL}${TestData.NEXT}"
+                prev = TestData.PAGE_URL,
+                next = "${TestData.PAGE_URL}${TestData.NEXT}"
         )
 
         // Act
@@ -83,7 +83,7 @@ class InfoDtoTest {
         underTest = InfoDto(
                 count = 1,
                 pages = 1,
-                prev = "${TestData.URL}${TestData.PREV}",
+                prev = "${TestData.PAGE_URL}${TestData.PREV}",
                 next = null
         )
 
@@ -100,7 +100,7 @@ class InfoDtoTest {
         underTest = InfoDto(
                 count = 1,
                 pages = 1,
-                prev = "${TestData.URL}${TestData.PREV}",
+                prev = "${TestData.PAGE_URL}${TestData.PREV}",
                 next = ""
         )
 
@@ -117,7 +117,7 @@ class InfoDtoTest {
         underTest = InfoDto(
                 count = 1,
                 pages = 1,
-                prev = "${TestData.URL}${TestData.PREV}",
+                prev = "${TestData.PAGE_URL}${TestData.PREV}",
                 next = "some invalid url"
         )
 
@@ -134,8 +134,8 @@ class InfoDtoTest {
         underTest = InfoDto(
                 count = 1,
                 pages = 1,
-                prev = "${TestData.URL}${TestData.PREV}",
-                next = TestData.URL
+                prev = "${TestData.PAGE_URL}${TestData.PREV}",
+                next = TestData.PAGE_URL
         )
 
         // Act
@@ -151,8 +151,8 @@ class InfoDtoTest {
         underTest = InfoDto(
                 count = 1,
                 pages = 1,
-                prev = "${TestData.URL}${TestData.PREV}",
-                next = "${TestData.URL}${TestData.NEXT}"
+                prev = "${TestData.PAGE_URL}${TestData.PREV}",
+                next = "${TestData.PAGE_URL}${TestData.NEXT}"
         )
 
         // Act

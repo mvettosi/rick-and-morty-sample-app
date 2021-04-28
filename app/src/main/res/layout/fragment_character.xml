@@ -1,16 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context=".presentation.character.CharacterFragment">
+    tools:context=".presentation.character.CharacterFragment"
+    android:weightSum="100"
+    android:orientation="vertical">
 
     <TextView
-        android:gravity="center"
-        android:layout_gravity="center"
         android:id="@+id/selected_name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="10"
+        android:gravity="center"
+        android:text="@string/unknown"
+        android:textStyle="bold"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeStepGranularity="2sp" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/character_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="30"
+        android:contentDescription="@string/character_image_desc" />
+
+    <TextView
+        android:id="@+id/char_information_title"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="5"
+        android:gravity="start"
+        android:text="@string/character_information"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeStepGranularity="2sp"
+        android:layout_margin="10dp" />
+
+    <TableLayout
+        android:id="@+id/char_information"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="25"
+        android:stretchColumns="1"
+        android:layout_margin="10dp">
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="@string/charinfo_status"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/charinfo_status"
+                android:gravity="center"
+                android:padding="3dip"
+                android:text="@string/unknown"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="@string/charinfo_species"
+                android:layout_width="wrap_content"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/charinfo_species"
+                android:gravity="center"
+                android:padding="3dip"
+                android:text="@string/unknown" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="@string/charinfo_gender"
+                android:layout_width="wrap_content"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/charinfo_gender"
+                android:gravity="center"
+                android:padding="3dip"
+                android:text="@string/unknown" />
+        </TableRow>
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/location_information_title"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="5"
+        android:gravity="start"
+        android:text="@string/location_data"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeStepGranularity="2sp"
+        android:layout_margin="10dp" />
+
+    <TableLayout
+        android:id="@+id/location_information"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="25"
+        android:stretchColumns="1"
+        android:layout_margin="10dp">
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="@string/location_name"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/location_name"
+                android:gravity="center"
+                android:padding="3dip"
+                android:text="@string/loading" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="@string/location_type"
+                android:layout_width="wrap_content"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/location_type"
+                android:gravity="center"
+                android:padding="3dip"
+                android:text="@string/loading" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="@string/location_dimensions"
+                android:layout_width="wrap_content"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/location_dimensions"
+                android:gravity="center"
+                android:padding="3dip"
+                android:text="@string/loading" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
