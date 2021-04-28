@@ -15,17 +15,19 @@ class CharacterViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(character: ShowCharacter?) = with(binding) {
-        if (character?.name != null) {
-            characterName.text = character.name
-            characterDate.text = character.created.toDateString()
+        characterName.text = character?.name ?: binding.root.context.getString(R.string.unknown)
+        characterDate.text = character?.created?.toDateString()
 
-            GlideApp.with(binding.root.context)
-                    .load(character.image ?: R.raw.unnamed)
-                    .into(characterImage)
+        GlideApp.with(binding.root.context)
+                .load(character?.image ?: R.raw.unnamed)
+                .into(characterImage)
 
-            binding.root.setOnClickListener { view ->
-                view.findNavController().navigate(HomeFragmentDirections.actionCharacter(character))
-            }
+        binding.root.setOnClickListener { view ->
+            view.findNavController().navigate(
+                    HomeFragmentDirections
+                            .actionCharacter()
+                            .apply { charInfo = character }
+            )
         }
     }
 

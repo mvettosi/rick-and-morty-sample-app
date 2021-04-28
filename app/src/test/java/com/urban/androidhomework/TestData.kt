@@ -27,7 +27,7 @@ object TestData {
             next = null
     )
 
-    private val CHARACTER_DTO = CharacterDto(
+    val CHARACTER_DTO = CharacterDto(
             id = 1,
             name = "test",
             created = Date(),

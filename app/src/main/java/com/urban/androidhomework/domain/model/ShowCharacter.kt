@@ -11,8 +11,8 @@ import java.util.*
  */
 @Parcelize
 data class ShowCharacter(
-        val name: String,
-        val created: Date,
+        val name: String?,
+        val created: Date?,
         val status: String?,
         val species: String?,
         val gender: String?,

@@ -99,6 +99,39 @@ class RickAndMortyApiTest {
         assertEquals("https://rickandmortyapi.com/api/character/14", result.residents!![1])
     }
 
+    @Test
+    fun `single character api call can be deserialized into our model`() = runBlocking {
+        // Arrange
+        server.apply {
+            enqueue(MockResponse().setBody(TEST_CHARACTER))
+        }
+        val baseUrl = server.url("")
+        val retrofit = networkModule.provideRetrofit(
+                baseUrl.toUrl().toString(),
+                networkModule.provideGson()
+        )
+        val underTest = networkModule.provideRickAndMortyApi(retrofit)
+
+        // Act
+        val result = underTest.getCharacter(2)
+
+        // Assert
+        assertNotNull(result)
+        assertEquals(2, result.id)
+        assertEquals("Morty Smith", result.name)
+
+        val created = result.created
+        val localCreated = created?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDate()
+        assertEquals(2017, localCreated?.year)
+        assertEquals(Month.NOVEMBER, localCreated?.month)
+        assertEquals(4, localCreated?.dayOfMonth)
+
+        assertEquals("Alive", result.status)
+        assertEquals("Human", result.species)
+        assertEquals("Male", result.gender)
+        assertEquals("https://rickandmortyapi.com/api/character/avatar/2.jpeg", result.image)
+    }
+
     private companion object {
         const val TEST_CHARACTERS =
                 """
@@ -150,6 +183,33 @@ class RickAndMortyApiTest {
                        ],
                        "url":"https://rickandmortyapi.com/api/location/3",
                        "created":"2017-11-10T13:08:13.191Z"
+                    }
+                """
+
+        const val TEST_CHARACTER =
+                """
+                    {
+                       "id":2,
+                       "name":"Morty Smith",
+                       "status":"Alive",
+                       "species":"Human",
+                       "type":"",
+                       "gender":"Male",
+                       "origin":{
+                          "name":"Earth",
+                          "url":"https://rickandmortyapi.com/api/location/1"
+                       },
+                       "location":{
+                          "name":"Earth",
+                          "url":"https://rickandmortyapi.com/api/location/20"
+                       },
+                       "image":"https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+                       "episode":[
+                          "https://rickandmortyapi.com/api/episode/1",
+                          "https://rickandmortyapi.com/api/episode/2"
+                       ],
+                       "url":"https://rickandmortyapi.com/api/character/2",
+                       "created":"2017-11-04T18:50:21.651Z"
                     }
                 """
     }

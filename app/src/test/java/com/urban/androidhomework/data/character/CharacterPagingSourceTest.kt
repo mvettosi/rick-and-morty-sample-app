@@ -1,9 +1,11 @@
-package com.urban.androidhomework.data
+package com.urban.androidhomework.data.character
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.urban.androidhomework.TestData
 import com.urban.androidhomework.api.RickAndMortyApi
+import com.urban.androidhomework.data.character.CharacterMapper
+import com.urban.androidhomework.data.character.CharacterPagingSource
 import com.urban.androidhomework.domain.model.ShowCharacter
 import com.urban.androidhomework.domain.network.PagedListDto
 import com.urban.androidhomework.domain.network.character.CharacterDto
@@ -21,11 +23,12 @@ import java.util.*
 
 class CharacterPagingSourceTest {
     private val rickAndMortyApi = mockk<RickAndMortyApi>(relaxed = true)
+    private val characterMapper = mockk<CharacterMapper>(relaxed = true)
     private lateinit var underTest: CharacterPagingSource
 
     @Before
     fun setUp() {
-        underTest = CharacterPagingSource(rickAndMortyApi)
+        underTest = CharacterPagingSource(rickAndMortyApi, characterMapper)
     }
 
     @Test
@@ -33,6 +36,7 @@ class CharacterPagingSourceTest {
         // Arrange
         val response = TestData.CHARACTER_RESPONSE_FIRST_PAGE
         coEvery { rickAndMortyApi.getAllCharacters(1) } returns response
+        every { characterMapper.map(TestData.CHARACTER_DTO) } returns TestData.SHOW_CHARACTER
         val expected = listOf(TestData.SHOW_CHARACTER)
 
         // Act
@@ -50,6 +54,7 @@ class CharacterPagingSourceTest {
         // Arrange
         val response = TestData.CHARACTER_RESPONSE_SECOND_PAGE
         coEvery { rickAndMortyApi.getAllCharacters(2) } returns response
+        every { characterMapper.map(TestData.CHARACTER_DTO) } returns TestData.SHOW_CHARACTER
         val expected = listOf(TestData.SHOW_CHARACTER)
 
         // Act

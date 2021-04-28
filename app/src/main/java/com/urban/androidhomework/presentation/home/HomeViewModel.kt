@@ -6,12 +6,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.filter
-import com.urban.androidhomework.data.CharacterRepository
+import com.urban.androidhomework.data.character.CharacterRepository
 import com.urban.androidhomework.presentation.general.toLocalDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
-import java.time.LocalDate
-import java.time.ZoneId
 import java.util.*
 import javax.inject.Inject
 
@@ -26,7 +24,7 @@ class HomeViewModel @Inject constructor(
 
     fun getCharacterFlow(query: Date? = null) = characterFlow.map { pagingData ->
         pagingData.filter {
-            query == null || query.toLocalDate() == it.created.toLocalDate()
+            query == null || query.toLocalDate() == it.created?.toLocalDate()
         }
     }
 }

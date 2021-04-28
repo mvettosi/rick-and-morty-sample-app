@@ -59,7 +59,7 @@
                 android:id="@+id/charinfo_status"
                 android:gravity="center"
                 android:padding="3dip"
-                android:text="@string/unknown"/>
+                android:text="@string/loading"/>
         </TableRow>
         <TableRow>
             <TextView
@@ -70,7 +70,7 @@
                 android:id="@+id/charinfo_species"
                 android:gravity="center"
                 android:padding="3dip"
-                android:text="@string/unknown" />
+                android:text="@string/loading" />
         </TableRow>
         <TableRow>
             <TextView
@@ -81,7 +81,7 @@
                 android:id="@+id/charinfo_gender"
                 android:gravity="center"
                 android:padding="3dip"
-                android:text="@string/unknown" />
+                android:text="@string/loading" />
         </TableRow>
     </TableLayout>
 

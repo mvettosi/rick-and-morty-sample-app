@@ -21,6 +21,14 @@ interface RickAndMortyApi {
     suspend fun getAllCharacters(@Query("page") pageNumber: Int? = FIRST_PAGE): PagedListDto<CharacterDto>
 
     /**
+     * Retrieves information regarding a character from the show.
+     *
+     * @param id the id of the character to load
+     */
+    @GET("character/{id}")
+    suspend fun getCharacter(@Path("id") id: Int): CharacterDto
+
+    /**
      * Retrieves information regarding a location from the show.
      *
      * @param id the id of the location to load
