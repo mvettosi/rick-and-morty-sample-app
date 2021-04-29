@@ -16,6 +16,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+/**
+ * Fragment class containing the logic of the Character Detail screen.
+ *
+ * If provided with direct Character information data, it displays it immediately, and triggers an
+ * asynchronous fetch of the related location data.
+ *
+ * If no direct data is available, but a character id is provided, both the character data, and later
+ * the location data referenced in it, are asynchronously fetched and displayed.
+ *
+ * If no form of character information is provided, or if any part of the request data cannot be
+ * fetched for any reason, the unavailable information elements display generic "Unknown" label.
+ */
 @AndroidEntryPoint
 class CharacterFragment : Fragment(R.layout.fragment_character) {
     private val viewModel by viewModels<CharacterViewModel>()
@@ -31,33 +43,40 @@ class CharacterFragment : Fragment(R.layout.fragment_character) {
 
         val charInfo = args.charInfo
         if (charInfo != null) {
+            // Direct character data provided, load it directly
             initView(charInfo)
         } else if (args.id > 0) {
+            // Character ID available, start fetching character data and display it on success
             lifecycleScope.launch {
                 viewModel.getCharInfo(args.id).collect { retrievedCharInfo ->
                     retrievedCharInfo?.let { initView(it) }
                 }
             }
+        } else {
+            // No form of character data available, initialise UI to generic "Unknown" data
+            initView(null)
         }
     }
 
-    private fun initView(charInfo: ShowCharacter) = with(binding) {
-        selectedName.text = charInfo.name
+    private fun initView(charInfo: ShowCharacter?) = with(binding) {
+        selectedName.text = charInfo?.name
 
         GlideApp.with(binding.root.context)
-                .load(charInfo.image ?: R.raw.unnamed)
+                .load(charInfo?.image ?: R.raw.unnamed)
                 .into(characterImage)
 
-        charinfoStatus.text = charInfo.status ?: unknownLabel
-        charinfoSpecies.text = charInfo.species ?: unknownLabel
-        charinfoGender.text = charInfo.gender ?: unknownLabel
+        charinfoStatus.text = charInfo?.status ?: unknownLabel
+        charinfoSpecies.text = charInfo?.species ?: unknownLabel
+        charinfoGender.text = charInfo?.gender ?: unknownLabel
 
-        val locationId = charInfo.locationId
+        val locationId = charInfo?.locationId
         if (locationId != null) {
+            // Location ID available, start fetching location data and display it on success
             lifecycleScope.launch {
                 viewModel.getLocation(locationId).collect { setLocationInfo(it) }
             }
         } else {
+            // No location ID available, set related fields to Unknown
             setLocationInfo(null)
         }
     }

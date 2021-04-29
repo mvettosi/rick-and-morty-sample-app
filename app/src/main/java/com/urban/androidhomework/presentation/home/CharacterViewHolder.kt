@@ -10,6 +10,10 @@ import com.urban.androidhomework.domain.model.ShowCharacter
 import com.urban.androidhomework.presentation.general.GlideApp
 import com.urban.androidhomework.presentation.general.toDateString
 
+/**
+ * View Holder class for elements of the paged character list displayed in the Home Fragment.
+ * It is responsible for initialising the ui components of each element in the list.
+ */
 class CharacterViewHolder(
         private val binding: CharacterViewItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {

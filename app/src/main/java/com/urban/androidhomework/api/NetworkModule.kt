@@ -10,9 +10,16 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Qualifier
 
+/**
+ * Annotation class used to identify the base url of the Rick and Morty api as an injectable String
+ */
 @Qualifier
 annotation class RickAndMortyBaseUrl
 
+/**
+ * Hilt Module providing information regarding how to construct objects related to the networking
+ * layer.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {

@@ -13,6 +13,12 @@ import kotlinx.coroutines.flow.map
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * View Model of the application's Home Fragment.
+ * It internally stores a long-lasting flow instance of the character list query, caching it in
+ * memory to allow re-use of already downloaded items, and exposes the ability to perform a query on
+ * them.
+ */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
         private val characterRepository: CharacterRepository

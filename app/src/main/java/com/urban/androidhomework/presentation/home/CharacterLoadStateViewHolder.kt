@@ -7,6 +7,11 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.urban.androidhomework.databinding.CharacterLoadingViewItemBinding
 
+/**
+ * View Holder of the Load State of an item in the Home Fragment's paged character list.
+ * It is responsible for initialising and updating the UI elements that display information regarding
+ * the loading state of an item, including an error message and a retry button.
+ */
 class CharacterLoadStateViewHolder(
         private val binding: CharacterLoadingViewItemBinding,
         retry: () -> Unit

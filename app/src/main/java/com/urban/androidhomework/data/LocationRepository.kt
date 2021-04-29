@@ -15,7 +15,7 @@ class LocationRepository @Inject constructor(
         private val rickAndMortyApi: RickAndMortyApi
 ) {
     /**
-     * Returns a flow emitting a flow of a show location
+     * Returns a flow emitting a show location
      */
     fun getLocation(id: Int): Flow<Result<ShowLocation>> = flow {
         rickAndMortyApi.getLocation(id).let {

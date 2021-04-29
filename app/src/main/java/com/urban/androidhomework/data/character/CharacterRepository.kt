@@ -9,7 +9,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * Repository class for data relative to Rick and Morty characters.
+ * Repository class for data related to Rick and Morty characters.
  */
 class CharacterRepository @Inject constructor(
         private val rickAndMortyApi: RickAndMortyApi,

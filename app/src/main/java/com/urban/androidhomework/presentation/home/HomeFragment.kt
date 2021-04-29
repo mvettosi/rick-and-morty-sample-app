@@ -22,13 +22,20 @@ import java.time.LocalDateTime
 import java.time.Month
 import java.time.ZoneId
 import java.util.*
+import javax.inject.Inject
 
+/**
+ * Fragment containing the logic for the landing page of the app, displaying the list of characters
+ * along with image and creation date.
+ * These characters are loaded on demand while scrolling the list, are recycled when possible, and
+ * it is possible to filter them by creation date without the need to download them again.
+ */
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.home_fragment) {
     private val viewModel by viewModels<HomeViewModel>()
     private val binding by viewBinding(HomeFragmentBinding::bind)
 
-    private val charactersAdapter = CharactersAdapter()
+    @Inject lateinit var charactersAdapter: CharactersAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

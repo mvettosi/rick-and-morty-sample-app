@@ -4,8 +4,13 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.urban.androidhomework.domain.model.ShowCharacter
+import javax.inject.Inject
 
-class CharactersAdapter: PagingDataAdapter<ShowCharacter, CharacterViewHolder>(REPO_COMPARATOR) {
+/**
+ * PagingDataAdapter for the paged list of characters displayed in the Home Fragment
+ */
+class CharactersAdapter @Inject constructor()
+    : PagingDataAdapter<ShowCharacter, CharacterViewHolder>(REPO_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             CharacterViewHolder.create(parent)
